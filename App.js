@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React, { useState, useEffect } from "react";
+import { ActivityIndicator } from "react-native";
+import * as Font from "expo-font";
+import { AppNavigator } from "./src/Navigation";
+import { Fonts } from "./src/Constants/";
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  /* Loading custom fonts in async */
+  const _loadAssetsAsync = async () => {
+    await Font.loadAsync(Fonts.customFonts);
+    setAssetsLoaded(true);
+  };
+
+  useEffect(() => {
+    _loadAssetsAsync();
+  });
+
+  return assetsLoaded ? (
+    <AppNavigator />
+  ) : (
+    <ActivityIndicator size="small"></ActivityIndicator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
